@@ -8,14 +8,15 @@ Detailed documentation is in the "docs" directory.
 
 Quick start
 -----------
-
-1. Add "fakemin" to your INSTALLED_APPS setting like this::
+1. download the build package from the github releases or from the project dist folder [django-fakemin-0.1.tar.gz]
+2. install using `pip install --user [DOWNLOAD LOCATION]/django-fakemin-0.1.tar.gz`.  
+2. Add "fakemin" to your INSTALLED_APPS setting like this::
 
     INSTALLED_APPS = [
         ...,
         "fakemin",
     ]
-2. Create factory.py or other .py file in any app and import the .
+3. Create factory.py or other .py file in any app and import the .
     ### users/factory.py
     from fakemin.factory import FakeMinFactory
     from fakemin.inputs import FakeChoiceInput, FakeInput
@@ -31,7 +32,7 @@ Quick start
         class Meta:
             model = Room
             count = 10
-2. Include the fakemin factory list in the settings.FAKEMIN_CONFIG in order::
+4. Include the fakemin factory list in the settings.FAKEMIN_CONFIG in order::
     FAKEMIN_CONFIG = {
         'factories':[
             'user.factory.UserFactory',
@@ -39,4 +40,4 @@ Quick start
         ]
     }
 
-3. Run ``python manage.py fakemin`` to create fake data.
+5. Run ``python manage.py fakemin`` to create fake data.
