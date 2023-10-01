@@ -1,0 +1,67 @@
+Metadata-Version: 2.1
+Name: django-fakemin
+Version: 0.1
+Summary: A Django data seeder using faker.
+Home-page: https://www.example.com/
+Author: Yeamin Mahmud
+Author-email: yeamin21@outlook.com
+License: BSD-3-Clause  # Example license
+Classifier: Environment :: Web Environment
+Classifier: Framework :: Django
+Classifier: Framework :: Django :: 3.0  # Replace "X.Y" as appropriate
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Topic :: Internet :: WWW/HTTP
+Classifier: Topic :: Internet :: WWW/HTTP :: Dynamic Content
+Requires-Python: >=3.8
+Requires-Dist: Django>=3.0
+Requires-Dist: faker>=19.0.0
+
+=====
+dj-fakemin
+=====
+
+dj-fakemin is a minimal fake data seeder for django which probably does need the simplest configuration.
+
+Detailed documentation is in the "docs" directory.
+
+Quick start
+-----------
+
+1. Add "fakemin" to your INSTALLED_APPS setting like this::
+
+    INSTALLED_APPS = [
+        ...,
+        "fakemin",
+    ]
+2. Create factory.py or other .py file in any app and import the .
+    ### users/factory.py
+    from fakemin.factory import FakeMinFactory
+    from fakemin.inputs import FakeChoiceInput, FakeInput
+    from users.models import User, Room
+    class UserFactory(FakeMinFactory):
+        username = FakeInput('user_name', post_process_func=make_password)
+        class Meta:
+            model = User # django model to create data against
+            count = 10 # no of rows you want
+    class RoomFactory(FakeMinFactory):
+        user = FakeChoiceInput(choices=User.objects.all())
+        capacity = FakeInput('pyint')
+        class Meta:
+            model = Room
+            count = 10
+2. Include the fakemin factory list in the settings.FAKEMIN_CONFIG in order::
+    FAKEMIN_CONFIG = {
+        'factories':[
+            'user.factory.UserFactory',
+            'user.factory.RoomFactory'
+        ]
+    }
+
+3. Run ``python manage.py fakemin`` to create fake data.

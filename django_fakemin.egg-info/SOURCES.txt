@@ -1,0 +1,16 @@
+MANIFEST.in
+README.rst
+pyproject.toml
+setup.cfg
+setup.py
+django_fakemin.egg-info/PKG-INFO
+django_fakemin.egg-info/SOURCES.txt
+django_fakemin.egg-info/dependency_links.txt
+django_fakemin.egg-info/requires.txt
+django_fakemin.egg-info/top_level.txt
+fakemin/__init__.py
+fakemin/apps.py
+fakemin/example.py
+fakemin/factory.py
+fakemin/inputs.py
+fakemin/management/commands/fakemin.py
