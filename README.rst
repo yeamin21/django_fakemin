@@ -8,10 +8,16 @@ Detailed documentation is on the way.
 
 Quick start
 -----------
-1. download the build package from the github releases or from the project dist folder [django-fakemin-0.1.tar.gz]
-2. install using::
+1. Installation:
+    a. using git::
 
-    pip install --user [DOWNLOAD LOCATION]/django-fakemin-0.1.tar.gz
+        pip install git+https://github.com/yeamin21/django_fakemin.git
+     or
+    b. local installation::
+
+        1. download the latest version from the releases [django-fakemin-0.1.tar.gz]
+        2. pip install --user [DOWNLOAD LOCATION]/django-fakemin-0.1.tar.gz
+
 2. Add "fakemin" to your INSTALLED_APPS setting like this::
 
     INSTALLED_APPS = [
