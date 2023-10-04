@@ -34,7 +34,6 @@ class FakeChoiceInput(FakeInput):
 class FakeImageInput(FakeInput):
     def __init__(
         self,
-        choices,
     ) -> None:
         super().__init__(...)
 
