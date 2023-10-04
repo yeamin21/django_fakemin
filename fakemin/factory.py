@@ -7,6 +7,7 @@ class FakeMinFactory:
     class Meta:
         count: int
         model: models.Model
+        chunk_size: int = 1000
 
     def __init__(self) -> None:
         self._meta = self.Meta()
@@ -15,8 +16,11 @@ class FakeMinFactory:
         self._declared_fields = self.get_declared_fields()
         self._factory = faker.Factory().create()
     def create(self):
-        self._model.objects.bulk_create([i for i in self.generate_items()], ignore_conflicts=True)
-
+        start = time.perf_counter()
+        for items in self.generate_items():
+            self._model.objects.bulk_create(items, ignore_conflicts=True)
+        end = time.perf_counter()
+        print(end-start)
     def get_declared_fields(self):
         return {
             attr: getattr(self, attr)
@@ -26,7 +30,14 @@ class FakeMinFactory:
 
     def generate_items(self):
         self.get_must_provide_fields()
-        return (self._model(**self.generate_faker_values() ,**self.generate_declared_values()) for i in range(self._meta.count))
+        chunk_size = self._meta.chunk_size
+        for i in range(0, self._meta.count,chunk_size):
+            yield [
+                self._model(**self.generate_faker_values(), 
+                        **self.generate_declared_values()
+                    )
+                for _ in range(i, i + chunk_size)
+            ]
 
     def generate_declared_values(self):
         vals = dict()
