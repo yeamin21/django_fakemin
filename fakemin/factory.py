@@ -15,12 +15,13 @@ class FakeMinFactory:
         self._model_fields = self._meta.model._meta.get_fields()
         self._declared_fields = self.get_declared_fields()
         self._factory = faker.Factory().create()
+        self._chunk_size = self._meta.chunk_size if hasattr(self._meta,'chunk_size') else 500
     def create(self):
         start = time.perf_counter()
         for items in self.generate_items():
             self._model.objects.bulk_create(items, ignore_conflicts=True)
         end = time.perf_counter()
-        print(end-start)
+        print('fakemin factory took {} seconds'.format(end-start))
     def get_declared_fields(self):
         return {
             attr: getattr(self, attr)
@@ -30,7 +31,7 @@ class FakeMinFactory:
 
     def generate_items(self):
         self.get_must_provide_fields()
-        chunk_size = self._meta.chunk_size
+        chunk_size = self._chunk_size
         for i in range(0, self._meta.count,chunk_size):
             yield [
                 self._model(**self.generate_faker_values(), 
