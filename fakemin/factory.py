@@ -1,3 +1,4 @@
+import time
 from django.db import models
 import faker
 from fakemin.inputs import FakeInput
@@ -13,9 +14,8 @@ class FakeMinFactory:
         self._model_fields = self._meta.model._meta.get_fields()
         self._declared_fields = self.get_declared_fields()
         self._factory = faker.Factory().create()
-
     def create(self):
-        self._model.objects.bulk_create(self.generate_items(), ignore_conflicts=True)
+        self._model.objects.bulk_create([i for i in self.generate_items()], ignore_conflicts=True)
 
     def get_declared_fields(self):
         return {
@@ -25,14 +25,8 @@ class FakeMinFactory:
         }
 
     def generate_items(self):
-        items = []
         self.get_must_provide_fields()
-        for i in range(self._meta.count):
-            item = {}
-            item.update(self.generate_faker_values())
-            item.update(self.generate_declared_values())
-            items.append(self._model(**item))
-        return items
+        return (self._model(**self.generate_faker_values() ,**self.generate_declared_values()) for i in range(self._meta.count))
 
     def generate_declared_values(self):
         vals = dict()
