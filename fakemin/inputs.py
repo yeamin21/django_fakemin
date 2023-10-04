@@ -1,7 +1,7 @@
 import random
 from typing import Callable, Optional
 import faker
-
+from django.core.files.base import ContentFile
 class FakeInput:
     def __init__(
         self,
@@ -30,3 +30,13 @@ class FakeChoiceInput(FakeInput):
 
     def get_value(self):
         return random.choice(self.choices)
+
+class FakeImageInput(FakeInput):
+    def __init__(
+        self,
+        choices,
+    ) -> None:
+        super().__init__(...)
+
+    def get_value(self):
+        return ContentFile(self._faker.image(), name=self._faker.file_name(category="image", extension="jpg"))
